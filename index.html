@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <link rel="manifest" href="manifest.json">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Arquibancada | Camisas de times do Brasil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700&family=Bricolage+Grotesque:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --noite: #0c0f3a;
+  --azul: #2f46ff;
+  --roxo: #7a3cff;
+  --lavanda: #e9e6ff;
+  --nevoa: #1a1e5c;
+  --branco: #ffffff;
+  --grad: linear-gradient(135deg, var(--azul), var(--roxo));
+}
+* { box-sizing: border-box; margin: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: "Archivo", system-ui, sans-serif; background: var(--noite); color: var(--lavanda); line-height: 1.5; }
+h1, h2, h3, .logo { font-family: "Bricolage Grotesque", "Archivo", sans-serif; }
+a { color: inherit; text-decoration: none; }
+:focus-visible { outline: 3px solid var(--lavanda); outline-offset: 3px; }
+
+.topo { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 2rem; padding: .9rem clamp(1rem, 5vw, 4rem); background: rgba(12,15,58,.92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--nevoa); }
+.logo { font-size: 1.5rem; font-weight: 800; color: var(--branco); margin-right: auto; }
+.topo nav { display: flex; gap: 1.5rem; }
+.topo nav a:hover { color: var(--branco); }
+.btn-carrinho { background: var(--grad); color: var(--branco); border: 0; padding: .55rem 1.1rem; border-radius: 999px; font: 700 .95rem "Archivo", sans-serif; cursor: pointer; }
+#contador { background: var(--branco); color: var(--roxo); border-radius: 999px; padding: 0 .5rem; margin-left: .3rem; }
+
+.hero { position: relative; overflow: hidden; min-height: 78vh; display: flex; align-items: center; padding: 4rem clamp(1rem, 5vw, 4rem); background: radial-gradient(circle at 80% 20%, #3a2a9a 0%, transparent 55%), var(--noite); }
+.numero { position: absolute; right: -2vw; top: 50%; transform: translateY(-50%); font: 800 clamp(16rem, 42vw, 40rem)/0.8 "Bricolage Grotesque", sans-serif; color: transparent; -webkit-text-stroke: 3px var(--roxo); opacity: .75; animation: entra 1s ease-out both; }
+@keyframes entra { from { opacity: 0; transform: translateY(-46%); } }
+.hero-texto { position: relative; max-width: 34rem; }
+.hero h1 { font-size: clamp(2.4rem, 6vw, 4.4rem); line-height: 1.02; color: var(--branco); margin-bottom: 1.2rem; }
+.hero p { font-size: 1.15rem; margin-bottom: 2rem; }
+
+.btn { display: inline-block; border: 0; cursor: pointer; background: var(--grad); color: var(--branco); padding: .9rem 1.8rem; border-radius: 10px; font: 700 1rem "Archivo", sans-serif; }
+.btn:hover { filter: brightness(1.12); }
+
+.loja { padding: 4rem clamp(1rem, 5vw, 4rem); }
+.loja-cabeca { display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; justify-content: space-between; margin-bottom: 2rem; }
+.loja h2 { font-size: 2.4rem; color: var(--branco); }
+.filtros { display: flex; flex-wrap: wrap; gap: .5rem; }
+.filtros button { background: transparent; color: var(--lavanda); border: 1px solid var(--roxo); padding: .4rem .9rem; border-radius: 999px; font: 500 .9rem "Archivo", sans-serif; cursor: pointer; }
+.filtros button[aria-pressed="true"] { background: var(--roxo); color: var(--branco); }
+.aviso { background: var(--nevoa); border-left: 4px solid var(--roxo); padding: .8rem 1rem; margin-bottom: 1.5rem; border-radius: 6px; }
+
+.grade { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 1.5rem; }
+.produto { background: var(--nevoa); border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; }
+.produto-img { aspect-ratio: 1; display: grid; place-items: center; background: linear-gradient(160deg, #232a7a, #3b2a9e); }
+.produto-img img { width: 100%; height: 100%; object-fit: cover; }
+.produto-img svg { width: 62%; }
+.produto-info { padding: 1rem; display: flex; flex-direction: column; gap: .3rem; flex: 1; }
+.produto-info small { color: #b3adff; }
+.produto-info h3 { font-size: 1.1rem; color: var(--branco); }
+.preco { font-weight: 700; font-size: 1.2rem; color: var(--branco); margin-top: auto; padding-top: .5rem; }
+.produto .btn { margin-top: .6rem; padding: .65rem; border-radius: 8px; }
+
+.rodape { padding: 2.5rem clamp(1rem, 5vw, 4rem); border-top: 1px solid var(--nevoa); text-align: center; }
+
+.gaveta { position: fixed; top: 0; right: 0; height: 100%; width: min(26rem, 100%); z-index: 30; background: var(--noite); border-left: 1px solid var(--roxo); display: flex; flex-direction: column; transform: translateX(100%); transition: transform .3s; }
+.gaveta.aberta { transform: none; }
+.gaveta-topo { display: flex; justify-content: space-between; align-items: center; padding: 1.2rem; border-bottom: 1px solid var(--nevoa); }
+.gaveta-topo button { background: none; border: 1px solid var(--roxo); color: var(--lavanda); padding: .3rem .8rem; border-radius: 8px; cursor: pointer; }
+#itens { list-style: none; padding: 1rem 1.2rem; overflow-y: auto; flex: 1; display: grid; gap: .8rem; align-content: start; }
+#itens li { display: grid; grid-template-columns: 1fr auto; gap: .2rem .8rem; background: var(--nevoa); padding: .8rem; border-radius: 10px; }
+#itens .qtd { grid-column: 1 / -1; display: flex; gap: .5rem; align-items: center; }
+#itens .qtd button { width: 1.8rem; height: 1.8rem; border-radius: 6px; border: 0; background: var(--roxo); color: var(--branco); cursor: pointer; }
+.vazio { color: #b3adff; }
+.gaveta-base { padding: 1.2rem; border-top: 1px solid var(--nevoa); display: grid; gap: .8rem; }
+.gaveta-base p:first-child { display: flex; justify-content: space-between; font-size: 1.2rem; }
+.msg { min-height: 1.2rem; font-size: .9rem; }
+.fundo { position: fixed; inset: 0; background: rgba(0,0,20,.6); z-index: 20; }
+
+@media (max-width: 640px) {
+  .topo nav { display: none; }
+  .numero { opacity: .35; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .numero { animation: none; }
+  .gaveta { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="topo">
+  <a class="logo" href="#inicio">Arquibancada</a>
+  <nav>
+    <a href="#loja">Camisas</a>
+    <a href="#contato">Contato</a>
+  </nav>
+  <button class="btn-carrinho" id="abrirCarrinho" aria-label="Abrir carrinho">Carrinho <span id="contador">0</span></button>
+</header>
+
+<main>
+  <section class="hero" id="inicio">
+    <span class="numero" aria-hidden="true">10</span>
+    <div class="hero-texto">
+      <h1>A camisa do seu time, do jeito que a torcida veste.</h1>
+      <p>Camisas oficiais e retrô dos maiores clubes do Brasil, com envio para todo o país.</p>
+      <a class="btn" href="#loja">Ver camisas</a>
+    </div>
+  </section>
+
+  <section class="loja" id="loja">
+    <div class="loja-cabeca">
+      <h2>Camisas</h2>
+      <div class="filtros" id="filtros" role="group" aria-label="Filtrar por time"></div>
+    </div>
+    <p class="aviso" id="aviso" hidden></p>
+    <div class="grade" id="grade"></div>
+  </section>
+</main>
+
+<footer class="rodape" id="contato">
+  <p>Arquibancada · Dúvidas? Escreva para contato@arquibancada.com.br</p>
+</footer>
+
+<aside class="gaveta" id="gaveta" aria-hidden="true">
+  <div class="gaveta-topo">
+    <h3>Seu carrinho</h3>
+    <button id="fecharCarrinho" aria-label="Fechar carrinho">Fechar</button>
+  </div>
+  <ul id="itens"></ul>
+  <div class="gaveta-base">
+    <p>Total <strong id="total">R$ 0,00</strong></p>
+    <button class="btn" id="finalizar">Finalizar pedido</button>
+    <p class="msg" id="msg"></p>
+  </div>
+</aside>
+<div class="fundo" id="fundo" hidden></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+/* ========= CONFIGURAÇÃO DO SUPABASE =========
+   Cole aqui a URL do projeto e a anon key (Project Settings > API). */
+const SUPABASE_URL = "https:\\itxajidbvmggxfmxhljy.supabase.co";      // ex: https://xxxx.supabase.co
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml0eGFqaWRidm1nZ3hmbXhobGp5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM5OTc3MjcsImV4cCI6MjEwOTU3MzcyN30.vzvlj9Oxjm4nxVwP8niWzQwM_aK6DuyR2Lfg1FTfLXk";
+
+const TABELA_PRODUTOS = "produtos";
+const TABELA_PEDIDOS = "pedidos";
+
+/* Dados de demonstração (usados enquanto o Supabase não estiver configurado) */
+const DEMO = [
+  { id: 1, nome: "Camisa I 2026", time: "Flamengo", preco: 349.9, cor: "#c8102e", imagem_url: null },
+  { id: 2, nome: "Camisa I 2026", time: "Corinthians", preco: 349.9, cor: "#f2f2f2", imagem_url: null },
+  { id: 3, nome: "Camisa I 2026", time: "Palmeiras", preco: 349.9, cor: "#006437", imagem_url: null },
+  { id: 4, nome: "Camisa I 2026", time: "São Paulo", preco: 339.9, cor: "#e30613", imagem_url: null },
+  { id: 5, nome: "Camisa I 2026", time: "Santos", preco: 329.9, cor: "#f5f5f5", imagem_url: null },
+  { id: 6, nome: "Camisa I 2026", time: "Grêmio", preco: 339.9, cor: "#0d80bf", imagem_url: null },
+  { id: 7, nome: "Camisa I 2026", time: "Cruzeiro", preco: 329.9, cor: "#1b4fb5", imagem_url: null },
+  { id: 8, nome: "Camisa I 2026", time: "Vasco", preco: 329.9, cor: "#1a1a1a", imagem_url: null },
+];
+
+const configurado = !SUPABASE_URL.startsWith("COLE_") && !SUPABASE_ANON_KEY.startsWith("COLE_");
+const db = configurado ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+
+let produtos = [];
+let timeAtivo = "Todos";
+let carrinho = []; // [{ produto, qtd }]
+
+const $ = (id) => document.getElementById(id);
+const brl = (v) => Number(v).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+
+async function carregarProdutos() {
+  if (!db) {
+    produtos = DEMO;
+    mostrarAviso("Modo demonstração: preencha SUPABASE_URL e SUPABASE_ANON_KEY no código para carregar os produtos do banco.");
+    return;
+  }
+  const { data, error } = await db.from(TABELA_PRODUTOS).select("*").order("id");
+  if (error) {
+    produtos = DEMO;
+    mostrarAviso("Não foi possível carregar os produtos do Supabase (" + error.message + "). Exibindo dados de demonstração.");
+    return;
+  }
+  produtos = data;
+}
+
+function mostrarAviso(texto) {
+  const el = $("aviso");
+  el.textContent = texto;
+  el.hidden = false;
+}
+
+function camisaSvg(cor) {
+  return `<svg viewBox="0 0 100 100" aria-hidden="true">
+    <path d="M32 10 L10 24 L20 42 L28 38 L28 90 L72 90 L72 38 L80 42 L90 24 L68 10 C64 18 36 18 32 10Z"
+      fill="${cor}" stroke="#ffffff" stroke-opacity=".6" stroke-width="2"/></svg>`;
+}
+
+function renderFiltros() {
+  const times = ["Todos", ...new Set(produtos.map((p) => p.time))];
+  $("filtros").innerHTML = times
+    .map((t) => `<button type="button" data-time="${t}" aria-pressed="${t === timeAtivo}">${t}</button>`)
+    .join("");
+}
+
+function renderProdutos() {
+  const lista = timeAtivo === "Todos" ? produtos : produtos.filter((p) => p.time === timeAtivo);
+  $("grade").innerHTML = lista.length
+    ? lista.map((p) => `
+      <article class="produto">
+        <div class="produto-img">${p.imagem_url ? `<img src="${p.imagem_url}" alt="${p.nome} ${p.time}">` : camisaSvg(p.cor || "#7a3cff")}</div>
+        <div class="produto-info">
+          <small>${p.time}</small>
+          <h3>${p.nome}</h3>
+          <span class="preco">${brl(p.preco)}</span>
+          <button class="btn" type="button" data-add="${p.id}">Adicionar ao carrinho</button>
+        </div>
+      </article>`).join("")
+    : "<p>Nenhuma camisa encontrada para este time.</p>";
+}
+
+function renderCarrinho() {
+  $("itens").innerHTML = carrinho.length
+    ? carrinho.map(({ produto: p, qtd }) => `
+      <li>
+        <span>${p.time} · ${p.nome}</span><strong>${brl(p.preco * qtd)}</strong>
+        <div class="qtd">
+          <button type="button" data-menos="${p.id}" aria-label="Diminuir">−</button>
+          <span>${qtd}</span>
+          <button type="button" data-mais="${p.id}" aria-label="Aumentar">+</button>
+        </div>
+      </li>`).join("")
+    : '<li class="vazio">Seu carrinho está vazio. Escolha uma camisa para começar.</li>';
+  $("contador").textContent = carrinho.reduce((s, i) => s + i.qtd, 0);
+  $("total").textContent = brl(carrinho.reduce((s, i) => s + i.produto.preco * i.qtd, 0));
+}
+
+function mudarQtd(id, delta) {
+  const item = carrinho.find((i) => i.produto.id == id);
+  if (!item) {
+    const produto = produtos.find((p) => p.id == id);
+    if (produto && delta > 0) carrinho.push({ produto, qtd: 1 });
+  } else {
+    item.qtd += delta;
+    carrinho = carrinho.filter((i) => i.qtd > 0);
+  }
+  renderCarrinho();
+}
+
+function gaveta(abrir) {
+  $("gaveta").classList.toggle("aberta", abrir);
+  $("gaveta").setAttribute("aria-hidden", String(!abrir));
+  $("fundo").hidden = !abrir;
+}
+
+async function finalizar() {
+  const msg = $("msg");
+  if (!carrinho.length) { msg.textContent = "Adicione ao menos uma camisa ao carrinho."; return; }
+  if (!db) { msg.textContent = "Conecte o Supabase no código para registrar pedidos."; return; }
+  const pedido = {
+    itens: carrinho.map((i) => ({ produto_id: i.produto.id, nome: i.produto.nome, time: i.produto.time, qtd: i.qtd, preco: i.produto.preco })),
+    total: carrinho.reduce((s, i) => s + i.produto.preco * i.qtd, 0),
+  };
+  const { error } = await db.from(TABELA_PEDIDOS).insert(pedido);
+  if (error) { msg.textContent = "Erro ao enviar o pedido: " + error.message; return; }
+  carrinho = [];
+  renderCarrinho();
+  msg.textContent = "Pedido enviado com sucesso!";
+}
+
+document.addEventListener("click", (e) => {
+  const t = e.target;
+  if (t.dataset.time) { timeAtivo = t.dataset.time; renderFiltros(); renderProdutos(); }
+  if (t.dataset.add) { mudarQtd(t.dataset.add, 1); gaveta(true); }
+  if (t.dataset.mais) mudarQtd(t.dataset.mais, 1);
+  if (t.dataset.menos) mudarQtd(t.dataset.menos, -1);
+});
+$("abrirCarrinho").addEventListener("click", () => gaveta(true));
+$("fecharCarrinho").addEventListener("click", () => gaveta(false));
+$("fundo").addEventListener("click", () => gaveta(false));
+$("finalizar").addEventListener("click", finalizar);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") gaveta(false); });
+
+(async function iniciar() {
+  await carregarProdutos();
+  renderFiltros();
+  renderProdutos();
+  renderCarrinho();
+})();
+</script>
+</body>
+</html>
